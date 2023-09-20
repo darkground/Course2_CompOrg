@@ -69,7 +69,7 @@ void printLong(long number) {
     cout << "\x1B[0m"; // Reset colors
 }
 
-void varyLong(long number, char side, int amount, int begin, int length) {
+void varyLong(long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long mask = (~0ul >> begin) ^ (~0ul >> (begin + length)); // Mask to make row of ones in specified sector
     long n = number & mask;
@@ -80,8 +80,6 @@ void varyLong(long number, char side, int amount, int begin, int length) {
     else
         n = (n << amount) | (n >> (length - amount));
     number = (number & ~mask) | (n & mask); // Applying changes
-    printLong(number);
-    cout << "(" << number << ")" << endl;
 }
 
 void longTask() {
@@ -98,7 +96,7 @@ void longTask() {
         int begin;
         int length;
         do {
-            cout << "Enter shift side (l/r/n): ";
+            cout << "Enter shift side, (l)eft, (r)ight or (n)one: ";
             side = readValue<char>();
         } while (side != 'l' && side != 'r' && side != 'n');
         if (side == 'n') return;
@@ -118,6 +116,8 @@ void longTask() {
         } while (length < 0);
         if (length == 0) return;
         varyLong(number, side, amount, begin, length);
+        printLong(number);
+        cout << "(" << number << ")" << endl;
     }
 }
 
@@ -137,7 +137,7 @@ void printDouble(long long number) {
     cout << "\x1B[0m "; // Reset colors
 }
 
-void varyDouble(long long number, char side, int amount, int begin, int length) {
+void varyDouble(unsigned long long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long long mask = (~0ull >> begin) ^ (~0ull >> (begin + length)); // Mask to make row of ones in specified sector
     long long n = number & mask;
@@ -148,8 +148,6 @@ void varyDouble(long long number, char side, int amount, int begin, int length) 
     else
         n = (n << amount) | (n >> (length - amount));
     number = (number & ~mask) | (n & mask); // Applying changes
-    printDouble(number);
-    cout << "(" << number << ")" << endl;
 }
 
 void doubleTask() {
@@ -170,7 +168,7 @@ void doubleTask() {
         int begin;
         int length;
         do {
-            cout << "Enter shift side (l/r/n): ";
+            cout << "Enter shift side, (l)eft, (r)ight or (n)one: ";
             side = readValue<char>();
         } while (side != 'l' && side != 'r' && side != 'n');
         if (side == 'n') return;
@@ -190,5 +188,7 @@ void doubleTask() {
         } while (length < 0);
         if (length == 0) return;
         varyDouble(repr, side, amount, begin, length);
+        printDouble(repr);
+        cout << "(" << number << ")" << endl;
     }
 }
