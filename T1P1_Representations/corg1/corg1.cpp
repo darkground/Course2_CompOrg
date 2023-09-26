@@ -53,6 +53,9 @@ int main()
     }
 }
 
+/*
+Вывод long на экран в двоичном формате
+*/
 void printLong(long number) {
     unsigned int order = sizeof(number) * 8;
     unsigned long mask = 1ul << (order - 1);
@@ -69,6 +72,14 @@ void printLong(long number) {
     cout << "\x1B[0m"; // Reset colors
 }
 
+/*
+Изменение битов long в соответствии с доп. заданием
+number: long
+side: r/l - сторона
+amount: int - количество сдвига
+begin: int - номер старшего бита
+length: int - длина диапазона
+*/
 void varyLong(long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long mask = (~0ul >> begin) ^ (~0ul >> (begin + length)); // Mask to make row of ones in specified sector
@@ -137,6 +148,14 @@ void printDouble(long long number) {
     cout << "\x1B[0m "; // Reset colors
 }
 
+/*
+Изменение битов double в соответствии с доп. заданием
+number: union-фицированный double
+side: r/l - сторона
+amount: int - количество сдвига
+begin: int - номер старшего бита
+length: int - длина диапазона
+*/
 void varyDouble(unsigned long long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long long mask = (~0ull >> begin) ^ (~0ull >> (begin + length)); // Mask to make row of ones in specified sector
@@ -151,6 +170,11 @@ void varyDouble(unsigned long long& number, char side, int amount, int begin, in
 }
 
 void doubleTask() {
+    /*
+    Вместо unsigned long long можно было бы использовать unsigned char[],
+    но это невозможно, т.к. в дополнительном задании требуется сдвиг во всём числе, а не только
+    в одном сегменте числа
+    */
     union {
         double number = 0.0;
         unsigned long long repr;
