@@ -96,7 +96,7 @@ void varyLong(long& number, char side, int amount, int begin, int length) {
 void longTask() {
     long number = 0;
     cout << "Input an integer: ";
-    number = readValue<int>();
+    number = readValue<long>();
 
     printLong(number);
     cout << "(" << number << ")" << endl;
@@ -112,20 +112,22 @@ void longTask() {
         } while (side != 'l' && side != 'r' && side != 'n');
         if (side == 'n') return;
         do {
-            cout << "Enter shift amount (0 to cancel): ";
+            cout << "Enter shift amount (-1 to cancel): ";
             amount = readValue<int>();
-        } while (amount < 0);
-        if (amount == 0) return;
+        } while (amount < -1);
+        if (amount == -1) return;
         do {
-            cout << "Enter segment begin (0 to cancel): ";
+            cout << "Enter segment begin (-1 to cancel): ";
             begin = readValue<int>();
-        } while (begin < 0);
-        if (begin == 0) return;
+        } while (begin < -1);
+        if (begin == -1) return;
         do {
-            cout << "Enter segment length (0 to cancel): ";
+            cout << "Enter segment length (-1 to cancel): ";
             length = readValue<int>();
-        } while (length < 0);
-        if (length == 0) return;
+        } while (length < -1);
+        if (length == -1) return;
+        if (begin >= sizeof(long long) * 8) return;
+        if (begin + length >= sizeof(long long) * 8) return;
         varyLong(number, side, amount, begin, length);
         printLong(number);
         cout << "(" << number << ")" << endl;
@@ -159,7 +161,7 @@ length: int - длина диапазона
 void varyDouble(unsigned long long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long long mask = (~0ull >> begin) ^ (~0ull >> (begin + length)); // Mask to make row of ones in specified sector
-    long long n = number & mask;
+    unsigned long long n = number & mask;
     printDouble(mask);
     cout << "Shift mask" << endl;
     if (side == 'r') // Cycling Shift
@@ -197,20 +199,22 @@ void doubleTask() {
         } while (side != 'l' && side != 'r' && side != 'n');
         if (side == 'n') return;
         do {
-            cout << "Enter shift amount (0 to cancel): ";
+            cout << "Enter shift amount (-1 to cancel): ";
             amount = readValue<int>();
-        } while (amount < 0);
-        if (amount == 0) return;
+        } while (amount < -1);
+        if (amount == -1) return;
         do {
-            cout << "Enter segment begin (0 to cancel): ";
+            cout << "Enter segment begin (-1 to cancel): ";
             begin = readValue<int>();
-        } while (begin < 0);
-        if (begin == 0) return;
+        } while (begin < -1);
+        if (begin == -1) return;
         do {
-            cout << "Enter segment length (0 to cancel): ";
+            cout << "Enter segment length (-1 to cancel): ";
             length = readValue<int>();
-        } while (length < 0);
-        if (length == 0) return;
+        } while (length < -1);
+        if (length == -1) return;
+        if (begin >= sizeof(long long) * 8) return;
+        if (begin + length >= sizeof(long long) * 8) return;
         varyDouble(repr, side, amount, begin, length);
         printDouble(repr);
         cout << "(" << number << ")" << endl;
