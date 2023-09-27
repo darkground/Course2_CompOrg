@@ -83,6 +83,8 @@ length: int - длина диапазона
 void varyLong(unsigned long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long mask = (~0ul >> begin) ^ (~0ul >> (begin + length)); // Mask to make row of ones in specified sector
+    if (begin + length == sizeof(long) * 8)
+        mask = ~0;
     unsigned long n = number & mask;
     printLong(mask);
     cout << "Shift mask" << endl;
@@ -130,7 +132,9 @@ void longTask() {
         } while (length < -1);
         if (length == -1) return;
         if (begin >= sizeof(long long) * 8) return;
-        if (begin + length >= sizeof(long long) * 8) return;
+        if (begin + length > sizeof(long long) * 8) return;
+        printLong(number);
+        cout << endl;
         varyLong(repr, side, amount, begin, length);
         printLong(number);
         cout << "(" << number << ")" << endl;
@@ -164,6 +168,8 @@ length: int - длина диапазона
 void varyDouble(unsigned long long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long long mask = (~0ull >> begin) ^ (~0ull >> (begin + length)); // Mask to make row of ones in specified sector
+    if (begin + length == sizeof(long long) * 8)
+        mask = ~0;
     unsigned long long n = number & mask;
     printDouble(mask);
     cout << "Shift mask" << endl;
@@ -217,7 +223,9 @@ void doubleTask() {
         } while (length < -1);
         if (length == -1) return;
         if (begin >= sizeof(long long) * 8) return;
-        if (begin + length >= sizeof(long long) * 8) return;
+        if (begin + length > sizeof(long long) * 8) return;
+        printDouble(repr);
+        cout << endl;
         varyDouble(repr, side, amount, begin, length);
         printDouble(repr);
         cout << "(" << number << ")" << endl;
