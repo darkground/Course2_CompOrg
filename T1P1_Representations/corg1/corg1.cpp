@@ -80,10 +80,10 @@ amount: int - количество сдвига
 begin: int - номер старшего бита
 length: int - длина диапазона
 */
-void varyLong(long& number, char side, int amount, int begin, int length) {
+void varyLong(unsigned long& number, char side, int amount, int begin, int length) {
     amount = amount % length;
     unsigned long mask = (~0ul >> begin) ^ (~0ul >> (begin + length)); // Mask to make row of ones in specified sector
-    long n = number & mask;
+    unsigned long n = number & mask;
     printLong(mask);
     cout << "Shift mask" << endl;
     if (side == 'r') // Cycling Shift
@@ -94,7 +94,10 @@ void varyLong(long& number, char side, int amount, int begin, int length) {
 }
 
 void longTask() {
-    long number = 0;
+    union {
+        long number = 0;
+        unsigned long repr;
+    };
     cout << "Input an integer: ";
     number = readValue<long>();
 
@@ -128,7 +131,7 @@ void longTask() {
         if (length == -1) return;
         if (begin >= sizeof(long long) * 8) return;
         if (begin + length >= sizeof(long long) * 8) return;
-        varyLong(number, side, amount, begin, length);
+        varyLong(repr, side, amount, begin, length);
         printLong(number);
         cout << "(" << number << ")" << endl;
     }
