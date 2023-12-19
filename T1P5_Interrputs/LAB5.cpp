@@ -8,7 +8,7 @@ void interrupt (*prevInterrupt)(...);
 void interrupt newInterrupt(...) {
     unsigned char keyState = inp(0x60);
     if ((keyState & 128) == 0) {
-        unsigned char k = rand() % 256;
+        unsigned char k = rand() % 95 + 32;
         
         putch(k);
     }
