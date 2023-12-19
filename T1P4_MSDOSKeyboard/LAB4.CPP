@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <dos.h>
 #include <conio.h>
 
 const int x1 = 25;
@@ -33,10 +34,20 @@ void drawWindow() {
     textcolor(WHITE);
 }
 
-int move(int& x, int& y, int& state)
+int gchr() {
+	union REGS r;
+
+	r.h.ah = 0x00;
+	int86(0x16, &r, &r);
+
+	return r.h.ah == 0x00 ? r.h.al : r.h.ah;
+}
+
+int move(int& x, int& y, int& state, int freplace = 0)
 {
     if (kbhit()) {
-		switch (getch()) {
+		int k = freplace ? gchr() : getch();
+		switch (k) {
 			case 77:
 				x++;
 				break;
@@ -49,6 +60,7 @@ int move(int& x, int& y, int& state)
 			case 80:
 				y++;
 				break;
+			case 1:
 			case 27:
 				state = 0;
 				break;
@@ -73,7 +85,7 @@ void main() {
     cprintf("*");
 
     while (state) {
-		if (move(x, y, state))
+		if (move(x, y, state, 1))
 		{
 			if (x == 0)
 				x = x2 - x1 + 1;
@@ -83,7 +95,7 @@ void main() {
 				y = y2 - y1 + 1;
 			if (y == y2 - y1 + 2)
 				y = 1;
-
+			
 			clrscr();
 			gotoxy(x,y);
 			cprintf("*");
