@@ -12,7 +12,7 @@ void interrupt newInterrupt(...) {
         
         putch(k);
     }
-    (*oldInt09h)();
+    (*prevInterrupt)();
 }
 
 void main() {
